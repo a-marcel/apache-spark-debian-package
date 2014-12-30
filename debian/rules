@@ -1,0 +1,168 @@
+#!/usr/bin/make -f
+
+#export MAVEN_OPTS="-Xmx2g -XX:MaxPermSize=512M -XX:ReservedCodeCacheSize=512m"
+
+
+VARIANTS := apache-spark-hadoop-0.23 apache-spark-hadoop-1.x-2.1.x apache-spark-hadoop-2.2.x apache-spark-hadoop-2.3.x apache-spark-hadoop-2.4.x apache-spark-hadoop-2.4.x-hive
+#VARIANTS := apache-spark-hadoop-2.4.x-hive
+
+VERSION := 1.1.1
+
+clean:
+	dh_testdir
+	dh_clean
+	mvn clean
+	# rm -f build
+
+#build: $(foreach s,$(VARIANTS),build-$(s)-stamp)
+build:
+#	@echo "--------------------------"
+#	@echo "Build source directory to $(*)"
+#	@echo "--------------------------"
+#	mvn -Dhadoop.version=1.2.1 -DskipTests clean package
+build-apache-spark-hadoop-0.23:
+	@echo "--------------------------"
+	@echo "Build apache-spark-hadoop-0.23"
+	@echo "--------------------------"
+	mvn -Phadoop-0.23 -DskipTests clean package
+
+build-apache-spark-hadoop-1.x-2.1.x:
+	@echo "--------------------------"
+	@echo "Build build-apache-spark-hadoop-1.x-2.1.x"
+	@echo "--------------------------"
+	mvn -DskipTests clean package
+
+build-apache-spark-hadoop-2.2.x:
+	@echo "--------------------------"
+	@echo "Build build-apache-spark-hadoop-2.2.x"
+	@echo "--------------------------"
+	mvn -Phadoop-2.2 -DskipTests clean package
+
+build-apache-spark-hadoop-2.3.x:
+	@echo "--------------------------"
+	@echo "Build build-apache-spark-hadoop-2.3.x"
+	@echo "--------------------------"
+	mvn -Phadoop-2.3 -DskipTests clean package
+
+build-apache-spark-hadoop-2.4.x:
+	@echo "--------------------------"
+	@echo "Build build-apache-spark-hadoop-2.4.x"
+	@echo "--------------------------"
+	mvn -Phadoop-0.24 -DskipTests clean package
+
+build-apache-spark-hadoop-2.4.x-hive:
+	@echo "--------------------------"
+	@echo "Build build-apache-spark-hadoop-2.4.x-hive"
+	@echo "--------------------------"
+	mvn -Pyarn -Phadoop-2.4 -Dhadoop.version=2.4.0 -Phive -Phive-thriftserver -DskipTests clean package
+
+
+
+install: $(foreach s,$(VARIANTS),install-$(s))
+install-%: build-%
+	@echo "--------------------------"
+	@echo "Preparing source directory to $(BUILDDIR)-$(*) for installing $(*)"
+	@echo "--------------------------"
+
+	mkdir -p $(CURDIR)/debian/$(*)/usr/share/apache-spark/bin
+	mkdir -p $(CURDIR)/debian/$(*)/usr/share/apache-spark/assembly/target/
+
+#	mkdir -p $(CURDIR)/debian/$(*)/usr/share/apache-spark/sql/core/target/
+#	mkdir -p $(CURDIR)/debian/$(*)/usr/share/apache-spark/sql/catalyst/target/
+#	mkdir -p $(CURDIR)/debian/$(*)/usr/share/apache-spark/sql/hive/target/
+#	mkdir -p $(CURDIR)/debian/$(*)/usr/share/apache-spark/sql/hive-thriftserver/target/
+
+#	mkdir -p $(CURDIR)/debian/$(*)/usr/share/apache-spark/streaming/target/
+#	mkdir -p $(CURDIR)/debian/$(*)/usr/share/apache-spark/repl/target/
+	mkdir -p $(CURDIR)/debian/$(*)/usr/share/apache-spark/tools/target/
+	mkdir -p $(CURDIR)/debian/$(*)/etc/apache-spark/
+	mkdir -p $(CURDIR)/debian/$(*)/usr/share/apache-spark/sbin
+
+	mkdir -p $(CURDIR)/debian/$(*)/var/log/apache-spark/
+	mkdir -p $(CURDIR)/debian/$(*)/etc/init.d/
+
+	cp -a $(CURDIR)/bin/* $(CURDIR)/debian/$(*)/usr/share/apache-spark/bin
+	cp -a $(CURDIR)/sbin/* $(CURDIR)/debian/$(*)/usr/share/apache-spark/sbin
+	cp -a $(CURDIR)/assembly/target/scala-* $(CURDIR)/debian/$(*)/usr/share/apache-spark/assembly/target/
+	cp -a $(CURDIR)/tools/target/spark-tools_* $(CURDIR)/debian/$(*)/usr/share/apache-spark/tools/target/
+
+#	cp -a $(CURDIR)/sql/core/target/spark-sql_* $(CURDIR)/debian/$(*)/usr/share/apache-spark/sql/core/target/
+#	cp -a $(CURDIR)/sql/catalyst/target/spark-catalyst_* $(CURDIR)/debian/$(*)/usr/share/apache-spark/sql/catalyst/target/
+#	cp -a $(CURDIR)/sql/hive/target/spark-hive_* $(CURDIR)/debian/$(*)/usr/share/apache-spark/sql/hive/target/
+#	[ ! -d $(CURDIR)/sql/hive-thriftserver/target ] || cp -a $(CURDIR)/sql/hive-thriftserver/target/spark-* $(CURDIR)/debian/$(*)/usr/share/apache-spark/sql/hive-thriftserver/target/
+
+#	cp -a $(CURDIR)/streaming/target/spark-streaming_* $(CURDIR)/debian/$(*)/usr/share/apache-spark/streaming/target/
+#	cp -a $(CURDIR)/repl/target/spark-repl_* $(CURDIR)/debian/$(*)/usr/share/apache-spark/repl/target/
+
+
+	cp -a $(CURDIR)/conf/* $(CURDIR)/debian/$(*)/etc/apache-spark/
+	cp -a $(CURDIR)/debian/spark-master $(CURDIR)/debian/$(*)/etc/init.d/
+	ln -snf /etc/apache-spark $(CURDIR)/debian/$(*)/usr/share/apache-spark/conf 
+	ln -snf /var/log/apache-spark $(CURDIR)/debian/$(*)/usr/share/apache-spark/logs
+
+#	mkdir -p $(CURDIR)/debian/$(*)/usr/lib/$(*)
+#	mkdir -p $(CURDIR)/debian/$(*)/etc/$(*)/conf
+#
+#	mkdir -p $(CURDIR)/debian/$(*)/var/log/flume-ng
+#	mkdir -p $(CURDIR)/debian/$(*)/var/lock/flume-ng
+#
+#	cp $(CURDIR)/flume-ng-dist/target/apache-flume-$(VERSION)-bin/apache-flume-$(VERSION)-bin/bin/flume-ng $(CURDIR)/debian/$(*)/usr/lib/$(*)/bin
+#	cp -a $(CURDIR)/flume-ng-dist/target/apache-flume-$(VERSION)-bin/apache-flume-$(VERSION)-bin/conf $(CURDIR)/debian/$(*)/etc/$(*)/
+#	cp -a $(CURDIR)/flume-ng-dist/target/apache-flume-$(VERSION)-bin/apache-flume-$(VERSION)-bin/lib $(CURDIR)/debian/$(*)/usr/lib/$(*)/
+#	ln -snf /etc/$(*)/conf $(CURDIR)/debian/$(*)/usr/lib/$(*)/conf 
+
+#	cat $(CURDIR)/flume-ng-dist/target/apache-flume-$(VERSION)-bin/apache-flume-$(VERSION)-bin/conf/log4j.properties | sed "s/flume.log.dir=.\/logs/flume.log.dir=\/var\/log\/flume-ng\//" | sed "s/flume.log.file=flume.log/flume.log.file=$(*).log/" > $(CURDIR)/debian/$(*)/etc/$(*)/conf/log4j.properties
+
+#build: $(foreach s,$(VARIANTS),build-$(s)-stamp)
+#	flume-ng-dist/target/apache-flume-1.5.2-bin/apache-flume-1.5.2-bin/
+#	mkdir -p $(CURDIR)
+#	dh_clean
+#	dh_installdirs
+
+#%:
+#	dh $@
+
+
+override_dh_installinit:
+	dh_installinit --noscripts --no-restart-on-upgrade
+
+binary-arch: install
+# There are no architecture-independent files to be uploaded
+# generated by this package.  If there were any they would be
+# made here.
+
+binary-indep: install
+	dh_testdir
+	dh_testroot
+	dh_installdebconf	
+##	dh_installdocs
+##	dh_installexamples
+##
+##	dh_installmenu
+##	dh_installlogrotate
+##	dh_installemacsen
+##	dh_installpam
+##	dh_installmime
+##	dh_installinit
+##	dh_installcron
+##	dh_installman
+	dh_installinfo
+##	dh_undocumented
+	dh_installchangelogs
+	dh_installinit
+#	dh_link
+#	dh_strip
+	dh_compress
+#	dh_fixperms
+##	dh_makeshlibs
+	dh_installdeb
+##	dh_perl
+	dh_shlibdeps
+	dh_gencontrol
+	dh_md5sums
+	dh_builddeb
+
+binary: binary-indep
+
+
+.PHONY: clean configure extract binary

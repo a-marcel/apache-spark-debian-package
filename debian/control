@@ -1,0 +1,67 @@
+Source: apache-spark
+Maintainer: Marcel Alburg <m.alburg@weeaar.com>
+Section: misc
+Priority: optional
+Standards-Version: 3.9.2
+Build-Depends: debhelper (>= 9)
+
+Package: apache-spark-hadoop-0.23
+Architecture: all
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Conflicts: apache-spark-hadoop-1.x-2.1.x, apache-spark-hadoop-2.2.x, apache-spark-hadoop-2.3.x, apache-spark-hadoop-2.4.x, apache-spark-hadoop-2.4.x-hive
+Description: Apache Spark is a fast and general-purpose cluster computing system. It 
+ provides high-level APIs in Java, Scala and Python, and an optimized engine that 
+ supports general execution graphs. It also supports a rich set of higher-level tools 
+ including Spark SQL for SQL and structured data processing, MLlib for machine learning, 
+ GraphX for graph processing, and Spark Streaming.
+
+Package: apache-spark-hadoop-1.x-2.1.x
+Architecture: all
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Conflicts: apache-spark-hadoop-0.23, apache-spark-hadoop-2.2.x, apache-spark-hadoop-2.3.x, apache-spark-hadoop-2.4.x, apache-spark-hadoop-2.4.x-hive
+Description: Apache Spark is a fast and general-purpose cluster computing system. It 
+ provides high-level APIs in Java, Scala and Python, and an optimized engine that 
+ supports general execution graphs. It also supports a rich set of higher-level tools 
+ including Spark SQL for SQL and structured data processing, MLlib for machine learning, 
+ GraphX for graph processing, and Spark Streaming.
+
+Package: apache-spark-hadoop-2.2.x
+Architecture: all
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Conflicts: apache-spark-hadoop-0.23, apache-spark-hadoop-1.x-2.1.x, apache-spark-hadoop-2.3.x, apache-spark-hadoop-2.4.x, apache-spark-hadoop-2.4.x-hive
+Description: Apache Spark is a fast and general-purpose cluster computing system. It 
+ provides high-level APIs in Java, Scala and Python, and an optimized engine that 
+ supports general execution graphs. It also supports a rich set of higher-level tools 
+ including Spark SQL for SQL and structured data processing, MLlib for machine learning, 
+ GraphX for graph processing, and Spark Streaming.
+
+Package: apache-spark-hadoop-2.3.x
+Architecture: all
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Conflicts: apache-spark-hadoop-0.23, apache-spark-hadoop-1.x-2.1.x, apache-spark-hadoop-2.2.x, apache-spark-hadoop-2.4.x, apache-spark-hadoop-2.4.x-hive
+Description: Apache Spark is a fast and general-purpose cluster computing system. It 
+ provides high-level APIs in Java, Scala and Python, and an optimized engine that 
+ supports general execution graphs. It also supports a rich set of higher-level tools 
+ including Spark SQL for SQL and structured data processing, MLlib for machine learning, 
+ GraphX for graph processing, and Spark Streaming.
+
+Package: apache-spark-hadoop-2.4.x
+Architecture: all
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Conflicts: apache-spark-hadoop-0.23, apache-spark-hadoop-1.x-2.1.x, apache-spark-hadoop-2.2.x, apache-spark-hadoop-2.3.x, apache-spark-hadoop-2.4.x-hive
+Description: Apache Spark is a fast and general-purpose cluster computing system. It 
+ provides high-level APIs in Java, Scala and Python, and an optimized engine that 
+ supports general execution graphs. It also supports a rich set of higher-level tools 
+ including Spark SQL for SQL and structured data processing, MLlib for machine learning, 
+ GraphX for graph processing, and Spark Streaming.
+
+Package: apache-spark-hadoop-2.4.x-hive
+Architecture: all
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Conflicts: apache-spark-hadoop-0.23, apache-spark-hadoop-1.x-2.1.x, apache-spark-hadoop-2.2.x, apache-spark-hadoop-2.3.x, apache-spark-hadoop-2.4.x
+Description: Apache Spark is a fast and general-purpose cluster computing system. It 
+ provides high-level APIs in Java, Scala and Python, and an optimized engine that 
+ supports general execution graphs. It also supports a rich set of higher-level tools 
+ including Spark SQL for SQL and structured data processing, MLlib for machine learning, 
+ GraphX for graph processing, and Spark Streaming.
+

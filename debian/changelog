@@ -1,0 +1,5 @@
+apache-spark (1.1.1-1) UNRELEASED; urgency=low
+
+  * Initial release. (Closes: #XXXXXX)
+
+ -- Marcel Alburg <m.alburg@weeaar.com>  Mon, 29 Dec 2014 18:16:26 +0100
